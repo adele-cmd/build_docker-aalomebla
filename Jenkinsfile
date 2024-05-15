@@ -71,13 +71,18 @@ pipeline{
     post{
         always {
             script {
-                    check_address=$(docker ps -a | default_container)
-                    if (-z "$check_address") {
-                        echo 'I only execute on the master branch'
-                    } else {
-                        sh "docker container stop default_container"
-                        sh "docker container rm default_container" 
-                    }
+                    sh """
+                        check_address='docker ps -a | default_container'
+                        if [ -z "$check_address" ]
+                        then
+                            validuser=0
+                        else
+                            validuser=1
+                            docker container stop default_container
+                            docker container rm default_container
+                        fi
+                        echo $validuser
+                        """
                 }
             }
     }    
