@@ -70,7 +70,7 @@ pipeline{
 
     post{
         always {
-            script {
+            
                     sh """
                         check_address='docker ps -a | default_container'
                         if [ -z "$check_address" ]
@@ -83,7 +83,6 @@ pipeline{
                         fi
                         echo $validuser
                         """
-                }
             }
     }    
 }
