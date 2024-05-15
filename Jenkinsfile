@@ -72,17 +72,7 @@ pipeline{
         always {
             
                     sh """
-                        check_address='docker ps -a | default_container'
-                        if [ -z "$check_address" ]
-                        then
-                            validuser=0
-                        else
-                            validuser=1
-                            docker container stop default_container
-                            docker container rm default_container
-                        fi
-                        echo $validuser
-                        """
+                    echo Always Fin de la pipeline"""
             }
     }    
 }
