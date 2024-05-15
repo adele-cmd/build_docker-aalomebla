@@ -71,7 +71,7 @@ pipeline{
     post{
         always {
             script {
-                    check_address=`docker ps -a | default_container`
+                    check_address=$(docker ps -a | default_container)
                     if (-z "$check_address") {
                         echo 'I only execute on the master branch'
                     } else {
