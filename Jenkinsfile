@@ -37,14 +37,14 @@ pipeline{
                 sh "echo $BRANCH_NAME"
                 sh "echo $env.GIT_BRANCH"
                 sh "printenv"
-                sh "docker build -t hervlokossou/$BRANCH_NAME_default_image ."
+                sh "docker build -t hervlokossou/${BRANCH_NAME}_default_image ."
             }
         }
 
 
         stage('Test docker image') { 
             steps {
-                sh "docker run -d -p 5000:8000 --name default_container hervlokossou/$BRANCH_NAME_default_image"
+                sh "docker run -d -p 5000:8000 --name default_container hervlokossou/${BRANCH_NAME}_default_image"
             }
         }
 
