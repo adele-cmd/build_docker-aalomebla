@@ -9,7 +9,7 @@ pipeline{
     stages{
         stage('Echo') {
             steps{
-                sh "echo Je suis là ${car}"
+                sh "echo Je suis là-bas !"
                 }
             }
         stage('Show Release') {
@@ -37,42 +37,35 @@ pipeline{
                 sh "echo $BRANCH_NAME"
                 sh "echo $env.GIT_BRANCH"
                 sh "printenv"
-                sh "docker build -t hervlokossou/${BRANCH_NAME}_default_image ."
+                sh "docker build -t alomeblaa/${BRANCH_NAME}_default_image ."
             }
         }
 
 
         stage('Test docker image') { 
             steps {
-                sh "docker run -d -p 5000:8000 --name default_container hervlokossou/${BRANCH_NAME}_default_image"
+                sh "docker build -t alomeblaa/${BRANCH_NAME}_default_image ."
+                sh "docker run -d -p 5000:8000 --name default_container_$env.BRANCH_NAME alomeblaa/${BRANCH_NAME}_default_image"
             }
         }
 
                 
         stage('Cleanup ') {
             steps {
-                sh "docker container stop default_container"
-                sh "docker container rm default_container" 
+                sh "docker container stop default_container_$env.BRANCH_NAME"
+                sh "docker container rm default_container_$env.BRANCH_NAME" 
             }
         }
 
         stage("Push image to Docker Hub"){
             steps{
-                withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDS', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]){
+                withCredentials([usernamePassword(credentialsId: 'DOCKER_CREDS_AALOMEBLA', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]){
                     sh """
-                    docker login  --username $USERNAME --password $PASSWORD && \
-                    docker push hervlokossou/${BRANCH_NAME}_default_image:latest
+                    docker login  --username $USERNAME --password $PASSWORD && docker push alomeblaa/${BRANCH_NAME}_default_image:latest
                     """
                 }
             }
         }
     } 
-
-    post{
-        always {
-            
-                    sh """
-                    echo Always Fin de la pipeline"""
-            }
-    }    
+   
 }
