@@ -9,7 +9,7 @@ pipeline{
     stages{
         stage('Echo') {
             steps{
-                sh "echo Je suis là-bas !"
+                sh "ca va  !"
                 }
             }
         stage('Show Release') {
